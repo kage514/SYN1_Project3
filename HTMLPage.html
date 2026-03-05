@@ -1,0 +1,281 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weed Warrior — Community Weeding Volunteer Project</title>
+  <meta name="description" content="Weed Warrior is a community volunteer project to remove invasive weeds and protect local habitats." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top Nav -->
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="#top" aria-label="Weed Warrior Home">
+        <span class="logo-mark">WW</span>
+        <span class="logo-text">Weed Warrior</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#motivation">Motivation</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reflections">Reflections</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav">
+        <span class="sr-only">Toggle navigation</span>
+        ☰
+      </button>
+    </div>
+
+    <nav class="mobile-nav container" id="mobileNav" hidden>
+      <a href="#about">About</a>
+      <a href="#motivation">Motivation</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reflections">Reflections</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="badge">Volunteer • Community • Environment</p>
+          <h1>Weed Warrior</h1>
+          <p class="lead">
+            A community service project to remove invasive weeds, restore native spaces,
+            and help our neighborhood stay healthy and beautiful.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#gallery">See Photos</a>
+            <a class="btn ghost" href="#motivation">Read Our Motivation</a>
+          </div>
+
+          <dl class="stats" aria-label="Project highlights">
+            <div>
+              <dt>Goal</dt>
+              <dd>Clear invasive weeds</dd>
+            </div>
+            <div>
+              <dt>Impact</dt>
+              <dd>Protect local habitat</dd>
+            </div>
+            <div>
+              <dt>Team</dt>
+              <dd>Student volunteers</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero-card">
+          <div class="card">
+            <h2 class="card-title">Event Snapshot</h2>
+            <ul class="list">
+              <li><strong>Date:</strong> <span contenteditable="true">March 10, 2026</span></li>
+              <li><strong>Location:</strong> <span contenteditable="true">Community Park</span></li>
+              <li><strong>Duration:</strong> <span contenteditable="true">2 hours</span></li>
+              <li><strong>Tools:</strong> <span contenteditable="true">Gloves, trash bags, rakes</span></li>
+            </ul>
+            <p class="note">
+              Tip: You can click and edit the fields above, then later copy them back into your file.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head">
+          <h2>About the Project</h2>
+          <p>
+            Weed Warrior is a public-interest activity where volunteers work together
+            to remove invasive weeds and reduce their impact on native plants.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="mini-card">
+            <h3>What we did</h3>
+            <p>
+              We identified common invasive weeds, removed them safely, and collected all plant waste
+              for proper disposal.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Why it matters</h3>
+            <p>
+              Invasive weeds can outcompete native plants, reduce biodiversity, and damage local ecosystems.
+              Removing them is a simple action with lasting benefits.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>How we stayed safe</h3>
+            <p>
+              We wore gloves, avoided unknown plants, used tools carefully, and washed hands afterward.
+              (Always follow local guidelines and supervision.)
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Motivation -->
+    <section class="section alt" id="motivation">
+      <div class="container">
+        <div class="section-head">
+          <h2>Our Motivation</h2>
+          <p>
+            Write your story here: what inspired the group, what problem you noticed, and what you hope to change.
+          </p>
+        </div>
+
+        <div class="motivation-grid">
+          <div class="panel">
+            <h3>Problem we noticed</h3>
+            <p contenteditable="true">
+              We observed that invasive weeds were spreading in our local park, crowding out native plants
+              and making trails less welcoming for families and wildlife.
+            </p>
+          </div>
+
+          <div class="panel">
+            <h3>What we wanted to achieve</h3>
+            <p contenteditable="true">
+              We wanted to take practical action: remove weeds, raise awareness, and encourage others
+              to care for shared public spaces.
+            </p>
+          </div>
+
+          <div class="panel">
+            <h3>What we learned</h3>
+            <p contenteditable="true">
+              Small teamwork can create visible change. We also learned how to distinguish invasive species,
+              and why consistent community efforts matter.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <h2>Photo Gallery</h2>
+          <p>Replace the sample images with your real activity photos in the <code>assets/</code> folder.</p>
+        </div>
+
+        <div class="gallery" role="list">
+          <button class="photo" role="listitem" data-full="assets/img1.jpg" aria-label="Open photo 1">
+            <img src="assets/img1.jpg" alt="Volunteers preparing tools for weeding" loading="lazy">
+            <span>Preparing</span>
+          </button>
+
+          <button class="photo" role="listitem" data-full="assets/img2.jpg" aria-label="Open photo 2">
+            <img src="assets/img2.jpg" alt="Team removing weeds together" loading="lazy">
+            <span>Removing weeds</span>
+          </button>
+
+          <button class="photo" role="listitem" data-full="assets/img3.jpg" aria-label="Open photo 3">
+            <img src="assets/img3.jpg" alt="Collected weeds bagged for disposal" loading="lazy">
+            <span>Results</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Lightbox -->
+      <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox-inner" role="dialog" aria-modal="true" aria-label="Image preview">
+          <button class="icon-btn" id="lightboxClose" aria-label="Close preview">✕</button>
+          <img id="lightboxImg" src="" alt="">
+          <p class="lightbox-caption" id="lightboxCaption"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reflections -->
+    <section class="section alt" id="reflections">
+      <div class="container">
+        <div class="section-head">
+          <h2>Team Reflections</h2>
+          <p>Put each member’s feeling / takeaway / impact here.</p>
+        </div>
+
+        <div class="quotes">
+          <figure class="quote">
+            <blockquote contenteditable="true">
+              “I didn’t realize how quickly invasive weeds can spread. Seeing the area cleared felt meaningful.”
+            </blockquote>
+            <figcaption contenteditable="true">— Member A</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote contenteditable="true">
+              “Working together made a tough task easier. It also reminded me that environmental care is everyone’s job.”
+            </blockquote>
+            <figcaption contenteditable="true">— Member B</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote contenteditable="true">
+              “This project taught me to pay attention to the small details in nature, and to protect native plants.”
+            </blockquote>
+            <figcaption contenteditable="true">— Member C</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact / Footer -->
+    <section class="section" id="contact">
+      <div class="container contact">
+        <div>
+          <h2>Contact</h2>
+          <p>
+            Want to join the next Weed Warrior cleanup or collaborate with us?
+            Send a message.
+          </p>
+          <ul class="contact-list">
+            <li><strong>Email:</strong> <span contenteditable="true">yourteam@email.com</span></li>
+            <li><strong>Instagram:</strong> <span contenteditable="true">@weedwarrior</span></li>
+          </ul>
+        </div>
+
+        <form class="form" onsubmit="return false;">
+          <label>
+            Name
+            <input type="text" placeholder="Your name" />
+          </label>
+          <label>
+            Message
+            <textarea rows="4" placeholder="Say hello..."></textarea>
+          </label>
+          <button class="btn primary" type="button" id="fakeSubmit">Send</button>
+          <p class="note" id="formNote" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-row">
+        <p>© <span id="year"></span> Weed Warrior. Built by our volunteer team.</p>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
