@@ -1,180 +1,246 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Weed Warrior — Community Cleanup Project</title>
-  <meta name="description" content="Weed Warrior is a volunteer project to remove invasive weeds and protect local habitats." />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weed Warrior — Community Cleanup Project</title>
+    <meta name="description" content="Weed Warrior is a volunteer project to remove invasive weeds and protect local habitats." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBAhVA-4vsJJWG6FkirM1NB9M4iK5dqG0M",
+        authDomain: "syn1-likebutton.firebaseapp.com",
+        projectId: "syn1-likebutton",
+        storageBucket: "syn1-likebutton.firebasestorage.app",
+        messagingSenderId: "930662560241",
+        appId: "1:930662560241:web:8d31c5873a12a8b0bb5450",
+        measurementId: "G-0REJWFLLVM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const likeRef = doc(db, "likes", "main");
+    const btn = document.getElementById("likeBtn");
+    const count = document.getElementById("likeCount");
+
+    const LOCAL_KEY = "ww_liked_state";
+
+    function setButtonState(liked) {
+        btn.classList.toggle("liked", liked);
+        btn.setAttribute("aria-pressed", liked ? "true" : "false");
+        btn.querySelector(".fab-heart").textContent = liked ? "♥" : "♡";
+    }
+
+    async function loadLikes() {
+        const snap = await getDoc(likeRef);
+        const total = snap.exists() ? (snap.data().count || 0) : 0;
+        count.textContent = total;
+
+        const liked = localStorage.getItem(LOCAL_KEY) === "true";
+        setButtonState(liked);
+    }
+
+    await loadLikes();
+
+    btn.addEventListener("click", async () => {
+        const snap = await getDoc(likeRef);
+        let current = snap.exists() ? (snap.data().count || 0) : 0;
+
+        const isLiked = localStorage.getItem(LOCAL_KEY) === "true";
+        const nextLiked = !isLiked;
+        const nextCount = nextLiked ? current + 1 : Math.max(0, current - 1);
+
+        await updateDoc(likeRef, { count: nextCount });
+
+        count.textContent = nextCount;
+        localStorage.setItem(LOCAL_KEY, String(nextLiked));
+        setButtonState(nextLiked);
+    });
+</script>
+
 <body>
-  <!-- Top Nav -->
-  <header class="site-header">
-    <div class="container nav">
-      <a class="logo" href="#top" aria-label="Weed Warrior Home">
-        <span class="logo-text">Weed Warrior</span>
-      </a>
-      <nav class="nav-links" aria-label="Primary">
-        <a href="#motivation">Motivation</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#team">Team Reflections</a>
-      </nav>
+    <!-- Top Nav -->
+    <header class="site-header">
+        <div class="container nav">
+            <a class="logo" href="#top" aria-label="Weed Warrior Home">
+                <span class="logo-text">Weed Warrior</span>
+            </a>
+            <nav class="nav-links" aria-label="Primary">
+                <a href="#motivation">Motivation</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#team">Team Reflections</a>
+            </nav>
 
-      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav">
-        <span class="sr-only">Toggle navigation</span>
-        ☰
-      </button>
-    </div>
-
-    <!-- MOTIVATION -->
-    <section class="section" id="motivation">
-      <div class="container">
-        <div class="section-head">
-          <h2>Motivation</h2>
-          <p>
-            Why this activity matters and what we hope to change.
-          </p>
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav">
+                <span class="sr-only">Toggle navigation</span>
+                ☰
+            </button>
         </div>
 
-        <div class="motivation-grid">
-          <article class="panel">
-            <h3>The Problem of Invasive Weeds</h3>
-            <p>
-              Invasive weeds can spread rapidly. They occupy the space of local plants and, thus, destroying biodiversity. 
-              Moreover, invasive weeds like brome grass or ice plant make fires more likely to occur (from 
-                <a href="https://theodorepayne.org/invasive-plants/" target="_blank">
-                Theodore Payne Foundation</a>).
-            </p>
-          </article>
+        <!-- Floating Like Button (bottom-right) -->
+        <button class="fab-like" id="likeBtn" aria-pressed="false" aria-label="Like this project">
+            <span class="fab-heart" aria-hidden="true">♡</span>
+            <span class="fab-count" id="likeCount">0</span>
+        </button>
 
-          <article class="panel">
-            <h3>Why Early Removal Matters</h3>
-            <p>
-              Invasive plants often go through a stage called the lag phase, in which the plants are present in the ecosystem 
-                but spreading slowly. Because the invasion has not yet reached its rapid expansion stage, 
-                it is much easier to control or remove the species. For this reason, early actions like <a href="https://nrs.ucsd.edu/events/index.html" target="_blank">
-                Weed Warrior</a>
-                is one of the most effective strategies for protecting native ecosystems.
-            </p>
-          </article>
+        <!-- MOTIVATION -->
+        <section class="section" id="motivation">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Motivation</h2>
+                    <p>
+                        Why this activity matters and what we hope to change.
+                    </p>
+                </div>
 
-          <article class="panel">
-            <h3>TODO</h3>
-            <p>
-              TODO: add something here.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
+                <div class="motivation-grid">
+                    <article class="panel">
+                        <h3>The Problem of Invasive Weeds</h3>
+                        <p>
+                            Invasive weeds can spread rapidly. They occupy the space of local plants and, thus, destroying biodiversity.
+                            Moreover, invasive weeds like brome grass or ice plant make fires more likely to occur (from
+                            <a href="https://theodorepayne.org/invasive-plants/" target="_blank">
+                                Theodore Payne Foundation
+                            </a>).
+                        </p>
+                    </article>
 
-    <!-- GALLERY (Masonry) -->
-    <section class="section alt" id="gallery">
-      <div class="container">
-        <div class="section-head">
-          <h2>Gallery</h2>
-        </div>
+                    <article class="panel">
+                        <h3>Why Early Removal Matters</h3>
+                        <p>
+                            Invasive plants often go through a stage called the lag phase, in which the plants are present in the ecosystem
+                            but spreading slowly. Because the invasion has not yet reached its rapid expansion stage,
+                            it is much easier to control or remove the species. For this reason, early actions like <a href="https://nrs.ucsd.edu/events/index.html" target="_blank">
+                                Weed Warrior
+                            </a>
+                            is one of the most effective strategies for protecting native ecosystems.
+                        </p>
+                    </article>
 
-        <div class="masonry" role="list">
-          <!-- Change src & data-full to your images -->
-          <button class="masonry-item" role="listitem" data-full="assets/g1.jpg" data-caption=" ">
-            <img src="assets/g1.jpg" alt="g1.jpg" loading="lazy">
-          </button>
-
-          <button class="masonry-item" role="listitem" data-full="assets/g2.jpg" data-caption=" ">
-            <img src="assets/g2.jpg" alt="g2.jpg" loading="lazy">
-          </button>
-
-          <button class="masonry-item" role="listitem" data-full="assets/g3.jpg" data-caption=" ">
-            <img src="assets/g3.jpg" alt="g3.jpg" loading="lazy">
-          </button>
-
-          <button class="masonry-item" role="listitem" data-full="assets/g4.jpg" data-caption=" ">
-            <img src="assets/g4.jpg" alt="g4.jpg" loading="lazy">
-          </button>
-
-          <button class="masonry-item" role="listitem" data-full="assets/g5.jpg" data-caption=" ">
-            <img src="assets/g5.jpg" alt="g5.jpg" loading="lazy">
-          </button>
-        </div>
-      </div>
-
-      <!-- Lightbox -->
-      <div class="lightbox" id="lightbox" aria-hidden="true">
-        <div class="lightbox-inner" role="dialog" aria-modal="true" aria-label="Image preview">
-          <div class="lightbox-top">
-            <p class="lightbox-caption" id="lightboxCaption"></p>
-            <button class="icon-btn" id="lightboxClose" aria-label="Close preview">✕</button>
-          </div>
-          <img id="lightboxImg" src="" alt="">
-        </div>
-      </div>
-    </section>
-
-    <!-- TEAM REFLECTIONS -->
-    <section class="section" id="team">
-      <div class="container">
-        <div class="section-head">
-          <h2>Team Reflections</h2>
-          <p>
-            What did we get from picking weeds.
-          </p>
-        </div>
-
-        <div class="team-grid">
-          <!-- Member Card 1 -->
-          <article class="member">
-            <div class="avatar" aria-hidden="true">A</div>
-            <div class="member-body">
-              <div class="member-top">
-                <h3 contenteditable="true">Member A</h3>
-              </div>
-              <p class="reflection" contenteditable="true">
-                TODO: ADD REFLECTIONS
-              </p>
+                    <article class="panel">
+                        <h3>Community Action Matters</h3>
+                        <p>
+                            Protecting the ecosystems is not only the responsibility of scientists or policymakers, but also of us as local communities. Volunteer activities definitely play an essential role here. We advocate participating in environmental protecting activities, by which community members can directly contribute to protecting biodiversity and maintaining the health of local ecosystems. Small collective actions can make a meaningful difference for environmental protection.
+                        </p>
+                    </article>
+                </div>
             </div>
-          </article>
+        </section>
 
-          <!-- Member Card 2 -->
-          <article class="member">
-            <div class="avatar" aria-hidden="true">B</div>
-            <div class="member-body">
-              <div class="member-top">
-                <h3 contenteditable="true">Member B</h3>
-              </div>
-              <p class="reflection" contenteditable="true">
-                TODO: ADD REFLECTIONS
-              </p>
+        <!-- GALLERY (Masonry) -->
+        <section class="section alt" id="gallery">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Gallery</h2>
+                </div>
+
+                <div class="masonry" role="list">
+                    <!-- Change src & data-full to your images -->
+                    <button class="masonry-item" role="listitem" data-full="assets/g1.jpg" data-caption=" ">
+                        <img src="assets/g1.jpg" alt="g1.jpg" width="1170" height="1560" loading="lazy">
+                    </button>
+
+                    <button class="masonry-item" role="listitem" data-full="assets/g2.jpg" data-caption=" ">
+                        <img src="assets/g2.jpg" alt="g2.jpg" width="1170" height="1560" loading="lazy">
+                    </button>
+
+                    <button class="masonry-item" role="listitem" data-full="assets/g3.jpg" data-caption=" ">
+                        <img src="assets/g3.jpg" alt="g3.jpg" width="1166" height="874" loading="lazy">
+                    </button>
+
+                    <button class="masonry-item" role="listitem" data-full="assets/g4.jpg" data-caption=" ">
+                        <img src="assets/g4.jpg" alt="g4.jpg" width="452" height="571" loading="lazy">
+                    </button>
+
+                    <button class="masonry-item" role="listitem" data-full="assets/g5.jpg" data-caption=" ">
+                        <img src="assets/g5.jpg" alt="g5.jpg" width="452" height="508" loading="lazy">
+                    </button>
+                </div>
             </div>
-          </article>
 
-          <!-- Member Card 3 -->
-          <article class="member">
-            <div class="avatar" aria-hidden="true">C</div>
-            <div class="member-body">
-              <div class="member-top">
-                <h3 contenteditable="true">Member C</h3>
-              </div>
-              <p class="reflection" contenteditable="true">
-                TODO: ADD REFLECTIONS
-              </p>
+            <!-- Lightbox -->
+            <div class="lightbox" id="lightbox" aria-hidden="true">
+                <div class="lightbox-inner" role="dialog" aria-modal="true" aria-label="Image preview">
+                    <div class="lightbox-top">
+                        <p class="lightbox-caption" id="lightboxCaption"></p>
+                        <button class="icon-btn" id="lightboxClose" aria-label="Close preview">✕</button>
+                    </div>
+                    <img id="lightboxImg" src="" alt="">
+                </div>
             </div>
-          </article>
-        </div>
+        </section>
 
-        <footer class="mini-footer">
-          <p>© <span id="year"></span> Team 3: Dante, Haoyang, Isaac, Sarthak.</p>
-        </footer>
-      </div>
-    </section>
-  </main>
+        <!-- TEAM REFLECTIONS -->
+        <section class="section" id="team">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Team Reflections</h2>
+                    <p>
+                        What did we get from picking weeds.
+                    </p>
+                </div>
 
-  <script src="script.js"></script>
+                <div class="team-grid">
+                    <!-- Member Card 1 -->
+                    <article class="member">
+                        <div class="avatar" aria-hidden="true">D</div>
+                        <div class="member-body">
+                            <div class="member-top">
+                                <h3>Dante</h3>
+                            </div>
+                            <p class="reflection">
+                                Going out to nature and picking up Weeds felt so satisfying. I felt so connected to nature, being exposed to the wild while the sun was rising was such a unique experience. I felt I had a positive contribution to nature by getting rid of invasive species. This activity made me realize how much positive impact I and many others can have on the environment in our community with so little effort. Picking up weeds is an activity that even kids can do, which can help save our local native species.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Member Card 2 -->
+                    <article class="member">
+                        <div class="avatar" aria-hidden="true">S</div>
+                        <div class="member-body">
+                            <div class="member-top">
+                                <h3>Sarthak</h3>
+                            </div>
+                            <p class="reflection">
+                                Going to the scripps local reserve with my friends in my SYN 1 section was one of my favorite in-class moments at UCSD. Being able to contribute to the habitat there felt like a privilege and being there in the early morning with the sun rising allowed me to feel one with nature. Our lead also taught us a lot about invasive species and the impacts they can have if we don't get rid of them. Picking weeds may be tiring, but it definitely is very rewarding! Although I know that just me contributing to our planet isn't enough to make a change, I really hope that people read my experience with my friends and try to take on their own journey. If we all take the tiny steps we can, I firmly believe we can take on climate change easily and have a beautiful mother earth.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Member Card 3 -->
+                    <article class="member">
+                        <div class="avatar" aria-hidden="true">I</div>
+                        <div class="member-body">
+                            <div class="member-top">
+                                <h3>Issac</h3>
+                            </div>
+                            <p class="reflection">
+                                Picking weeds with weed warriors was a really inspiring experience. It was great being able to go out and do some habitat restoration, getting really getting hands on with nature and the environment. Even though we had to wake up early, it was definitely worth it. The most inspiring part for me was listening to the lead talk about how as a result of people coming to pick weeds for a few years, they actually made some great progress restoring this habitat, and it felt pretty special that I could be a part of that too. Hopefully that can also inspire anyone else reading this to go pick weeds with Weed Warriors too!
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+                <footer class="mini-footer">
+                    <p>© <span id="year"></span> Team 3: Dante, Haoyang, Isaac, Sarthak.</p>
+                </footer>
+            </div>
+        </section>
+        </main>
+
+
+
+        <script src="script.js"></script>
 </body>
 </html>
